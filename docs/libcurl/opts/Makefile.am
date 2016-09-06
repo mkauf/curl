@@ -170,6 +170,7 @@ man_MANS =                                      \
  CURLOPT_IOCTLFUNCTION.3                        \
  CURLOPT_IPRESOLVE.3                            \
  CURLOPT_ISSUERCERT.3                           \
+ CURLOPT_KEEP_SENDING_ON_ERROR.3                \
  CURLOPT_KEYPASSWD.3                            \
  CURLOPT_KRBLEVEL.3                             \
  CURLOPT_LOCALPORT.3                            \
