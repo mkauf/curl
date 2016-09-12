@@ -49,9 +49,9 @@ static void reset_data(struct cb_data *data, CURL *curl)
 
 
 static size_t read_callback(void *ptr, size_t size, size_t nitems,
-    void *userdata)
+                            void *userdata)
 {
-  struct cb_data *data = (struct cb_data *) userdata;
+  struct cb_data *data = (struct cb_data *)userdata;
 
   /* wait until the server has sent all response headers */
   if(data->response_received) {
@@ -75,9 +75,9 @@ static size_t read_callback(void *ptr, size_t size, size_t nitems,
 
 
 static size_t write_callback(char *ptr, size_t size, size_t nmemb,
-    void *userdata)
+                             void *userdata)
 {
-  struct cb_data *data = (struct cb_data *) userdata;
+  struct cb_data *data = (struct cb_data *)userdata;
   size_t totalsize = nmemb * size;
 
   /* unused parameter */
@@ -97,7 +97,7 @@ static size_t write_callback(char *ptr, size_t size, size_t nmemb,
 
 
 static int perform_and_check_connections(CURL *curl, const char *description,
-    long expected_connections)
+                                         long expected_connections)
 {
   CURLcode res;
   long connections = 0;
@@ -115,7 +115,7 @@ static int perform_and_check_connections(CURL *curl, const char *description,
   }
 
   fprintf(stderr, "%s: expected: %ld connections; actual: %ld connections\n",
-    description, expected_connections, connections);
+          description, expected_connections, connections);
 
   if(connections != expected_connections) {
     return TEST_ERR_FAILURE;
@@ -147,7 +147,7 @@ int test(char *URL)
   test_setopt(curl, CURLOPT_URL, URL);
   test_setopt(curl, CURLOPT_POST, 1L);
   test_setopt(curl, CURLOPT_POSTFIELDSIZE_LARGE,
-      (curl_off_t) data.remaining_bytes);
+              (curl_off_t)data.remaining_bytes);
   test_setopt(curl, CURLOPT_VERBOSE, 1L);
   test_setopt(curl, CURLOPT_READFUNCTION, read_callback);
   test_setopt(curl, CURLOPT_READDATA, &data);
@@ -155,7 +155,7 @@ int test(char *URL)
   test_setopt(curl, CURLOPT_WRITEDATA, &data);
 
   res = perform_and_check_connections(curl,
-      "First request without CURLOPT_KEEP_SENDING_ON_ERROR", 1);
+    "First request without CURLOPT_KEEP_SENDING_ON_ERROR", 1);
   if(res != TEST_ERR_SUCCESS) {
     goto test_cleanup;
   }
@@ -163,7 +163,7 @@ int test(char *URL)
   reset_data(&data, curl);
 
   res = perform_and_check_connections(curl,
-      "Second request without CURLOPT_KEEP_SENDING_ON_ERROR", 1);
+    "Second request without CURLOPT_KEEP_SENDING_ON_ERROR", 1);
   if(res != TEST_ERR_SUCCESS) {
     goto test_cleanup;
   }
@@ -173,7 +173,7 @@ int test(char *URL)
   reset_data(&data, curl);
 
   res = perform_and_check_connections(curl,
-      "First request with CURLOPT_KEEP_SENDING_ON_ERROR", 1);
+    "First request with CURLOPT_KEEP_SENDING_ON_ERROR", 1);
   if(res != TEST_ERR_SUCCESS) {
     goto test_cleanup;
   }
@@ -181,7 +181,7 @@ int test(char *URL)
   reset_data(&data, curl);
 
   res = perform_and_check_connections(curl,
-      "Second request with CURLOPT_KEEP_SENDING_ON_ERROR", 0);
+    "Second request with CURLOPT_KEEP_SENDING_ON_ERROR", 0);
   if(res != TEST_ERR_SUCCESS) {
     goto test_cleanup;
   }

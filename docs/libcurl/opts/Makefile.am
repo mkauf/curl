@@ -458,6 +458,7 @@ HTMLPAGES =                                     \
  CURLOPT_IOCTLFUNCTION.html                     \
  CURLOPT_IPRESOLVE.html                         \
  CURLOPT_ISSUERCERT.html                        \
+ CURLOPT_KEEP_SENDING_ON_ERROR.html             \
  CURLOPT_KEYPASSWD.html                         \
  CURLOPT_KRBLEVEL.html                          \
  CURLOPT_LOCALPORT.html                         \
@@ -745,6 +746,7 @@ PDFPAGES =                                      \
  CURLOPT_IOCTLFUNCTION.pdf                      \
  CURLOPT_IPRESOLVE.pdf                          \
  CURLOPT_ISSUERCERT.pdf                         \
+ CURLOPT_KEEP_SENDING_ON_ERROR.pdf              \
  CURLOPT_KEYPASSWD.pdf                          \
  CURLOPT_KRBLEVEL.pdf                           \
  CURLOPT_LOCALPORT.pdf                          \

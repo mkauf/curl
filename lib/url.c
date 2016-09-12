@@ -784,7 +784,7 @@ CURLcode Curl_setopt(struct Curl_easy *data, CURLoption option,
     break;
   case CURLOPT_KEEP_SENDING_ON_ERROR:
     data->set.http_keep_sending_on_error = (0 != va_arg(param, long)) ?
-        TRUE : FALSE;
+                                           TRUE : FALSE;
     break;
   case CURLOPT_UPLOAD:
   case CURLOPT_PUT:
