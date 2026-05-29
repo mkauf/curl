@@ -956,6 +956,9 @@ CURLcode config2setopts(struct OperationConfig *config,
   if(config->path_as_is)
     my_setopt_long(curl, CURLOPT_PATH_AS_IS, 1);
 
+  if(config->percent_encoding_as_is)
+    my_setopt_long(curl, CURLOPT_PERCENT_ENCODING_AS_IS, 1);
+
   if(config->no_body || config->remote_time)
     /* no body or use remote time */
     my_setopt_long(curl, CURLOPT_FILETIME, 1);

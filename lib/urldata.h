@@ -1245,6 +1245,7 @@ struct UserDefined {
   BIT(tcp_fastopen);   /* use TCP Fast Open */
   BIT(ssl_enable_alpn);/* TLS ALPN extension? */
   BIT(path_as_is);     /* allow dotdots? */
+  BIT(pctenc_as_is);   /* keep percent encodings as is? */
   BIT(pipewait);       /* wait for multiplex status before starting a new
                           connection */
   BIT(suppress_connect_headers); /* suppress proxy CONNECT response headers

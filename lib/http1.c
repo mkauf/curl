@@ -227,6 +227,7 @@ static CURLcode start_req(struct h1_req_parser *parser,
       }
       url_options = (CURLU_NON_SUPPORT_SCHEME |
                      CURLU_PATH_AS_IS |
+                     CURLU_PERCENT_ENCODING_AS_IS |
                      CURLU_NO_DEFAULT_PORT);
       if(!(options & H1_PARSE_OPT_STRICT))
         url_options |= CURLU_ALLOW_SPACE;

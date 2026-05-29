@@ -144,37 +144,44 @@ static CURLcode test_unit1675(const char *arg)
     struct urlencode_test {
       const char *in;
       bool relative;
+      bool pctenc_normalize;
       unsigned int query;
       const char *out;
     };
     const struct urlencode_test tests[] = {
-      {"http://leave\x01/hello\x01world", FALSE, QUERY_NO,
+      {"http://leave\x01/hello\x01world", FALSE, TRUE, QUERY_NO,
        "http://leave\x01/hello%01world"},
-      {"http://leave/hello\x01world", FALSE, QUERY_NO,
+      {"http://leave/hello\x01world", FALSE, TRUE, QUERY_NO,
        "http://leave/hello%01world"},
-      {"http://le ave/hello\x01world", FALSE, QUERY_NO,
+      {"http://le ave/hello\x01world", FALSE, TRUE, QUERY_NO,
        "http://le ave/hello%01world"},
-      {"hello\x01world", TRUE, QUERY_NO, "hello%01world"},
-      {"hello\xf0world", TRUE, QUERY_NO, "hello%F0world"},
-      {"hello world", TRUE, QUERY_NO, "hello%20world"},
-      {"hello%20world", TRUE, QUERY_NO, "hello%20world"},
-      {"hello world", TRUE, QUERY_YES, "hello+world"},
-      {"a+b c", TRUE, QUERY_NO, "a+b%20c"},
-      {"a%20b%20c", TRUE, QUERY_NO, "a%20b%20c"},
-      {"a%aab%aac", TRUE, QUERY_NO, "a%AAb%AAc"},
-      {"a%aab%AAc", TRUE, QUERY_NO, "a%AAb%AAc"},
-      {"w%w%x", TRUE, QUERY_NO, "w%w%x"},
-      {"w%wf%xf", TRUE, QUERY_NO, "w%wf%xf"},
-      {"w%fw%fw", TRUE, QUERY_NO, "w%fw%fw"},
-      {"a+b c", TRUE, QUERY_YES, "a+b+c"},
-      {"/foo/bar", TRUE, QUERY_NO, "/foo/bar"},
-      {"/foo/bar", TRUE, QUERY_YES, "/foo/bar"},
-      {"/foo/ bar", TRUE, QUERY_NO, "/foo/%20bar"},
-      {"/foo/ bar", TRUE, QUERY_YES, "/foo/+bar"},
-      {"~-._", TRUE, QUERY_NO, "~-._"},
-      {"~-._", TRUE, QUERY_YES, "~-._"},
-      {"foo bar?foo bar", TRUE, QUERY_NO, "foo%20bar?foo%20bar"},
-      {"foo bar?foo bar", TRUE, QUERY_NOT_YET, "foo%20bar?foo+bar"},
+      {"hello\x01world", TRUE, TRUE, QUERY_NO, "hello%01world"},
+      {"hello\xf0world", TRUE, TRUE, QUERY_NO, "hello%F0world"},
+      {"hello world", TRUE, TRUE, QUERY_NO, "hello%20world"},
+      {"hello%20world", TRUE, TRUE, QUERY_NO, "hello%20world"},
+      {"hello world", TRUE, TRUE, QUERY_YES, "hello+world"},
+      {"a+b c", TRUE, TRUE, QUERY_NO, "a+b%20c"},
+      {"a%20b%20c", TRUE, TRUE, QUERY_NO, "a%20b%20c"},
+      {"a%aab%aac", TRUE, TRUE, QUERY_NO, "a%AAb%AAc"},
+      {"a%aab%aac", TRUE, FALSE, QUERY_NO, "a%aab%aac"},
+      {"a%aab%AAc", TRUE, TRUE, QUERY_NO, "a%AAb%AAc"},
+      {"a%aab%AAc", TRUE, FALSE, QUERY_NO, "a%aab%AAc"},
+      {"w%w%x", TRUE, TRUE, QUERY_NO, "w%w%x"},
+      {"w%wf%xf", TRUE, TRUE, QUERY_NO, "w%wf%xf"},
+      {"w%fw%fw", TRUE, TRUE, QUERY_NO, "w%fw%fw"},
+      {"a+b c", TRUE, TRUE, QUERY_YES, "a+b+c"},
+      {"/foo/bar", TRUE, TRUE, QUERY_NO, "/foo/bar"},
+      {"/foo/bar", TRUE, TRUE, QUERY_YES, "/foo/bar"},
+      {"/foo/ bar", TRUE, TRUE, QUERY_NO, "/foo/%20bar"},
+      {"/foo/ bar", TRUE, TRUE, QUERY_YES, "/foo/+bar"},
+      {"~-._", TRUE, TRUE, QUERY_NO, "~-._"},
+      {"~-._", TRUE, TRUE, QUERY_YES, "~-._"},
+      {"foo bar?foo bar", TRUE, TRUE, QUERY_NO, "foo%20bar?foo%20bar"},
+      {"foo bar?foo bar", TRUE, TRUE, QUERY_NOT_YET, "foo%20bar?foo+bar"},
+      {"foo bar?foo bar a%aab%AAc", TRUE, TRUE, QUERY_NOT_YET,
+        "foo%20bar?foo+bar+a%AAb%AAc"},
+      {"foo bar?foo bar a%aab%AAc", TRUE, FALSE, QUERY_NOT_YET,
+        "foo%20bar?foo+bar+a%aab%AAc"},
     };
 
     curlx_dyn_init(&out, 256);
@@ -182,7 +189,8 @@ static CURLcode test_unit1675(const char *arg)
       CURLUcode uc;
       curlx_dyn_reset(&out);
       uc = urlencode_str(&out, tests[i].in, strlen(tests[i].in),
-                         tests[i].relative, tests[i].query);
+                         tests[i].relative, tests[i].pctenc_normalize,
+                         tests[i].query);
       if(uc || strcmp(curlx_dyn_ptr(&out), tests[i].out)) {
         curl_mfprintf(stderr, "urlencode_str('%s', query=%u) failed:"
                       " expected '%s', got '%s'\n",

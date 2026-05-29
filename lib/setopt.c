@@ -812,6 +812,9 @@ static CURLcode setopt_long_bool(struct Curl_easy *data, CURLoption option,
   case CURLOPT_QUICK_EXIT:
     s->quick_exit = enabled;
     break;
+  case CURLOPT_PERCENT_ENCODING_AS_IS:
+    s->pctenc_as_is = enabled;
+    break;
   default:
     return CURLE_UNKNOWN_OPTION;
   }

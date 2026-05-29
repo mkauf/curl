@@ -1210,7 +1210,9 @@ CURLcode Curl_http_follow(struct Curl_easy *data, const char *newurl,
                     ((type == FOLLOW_FAKE) ? CURLU_NON_SUPPORT_SCHEME :
                      ((type == FOLLOW_REDIR) ? CURLU_URLENCODE : 0) |
                      CURLU_ALLOW_SPACE |
-                     (data->set.path_as_is ? CURLU_PATH_AS_IS : 0)));
+                     (data->set.path_as_is ? CURLU_PATH_AS_IS : 0) |
+                     (data->set.pctenc_as_is ? CURLU_PERCENT_ENCODING_AS_IS
+                       : 0)));
   if(uc) {
     if((uc == CURLUE_OUT_OF_MEMORY) || (type != FOLLOW_FAKE)) {
       failf(data, "The redirect target URL could not be parsed: %s",

@@ -226,6 +226,7 @@ static const struct LongShort aliases[]= {
   {"parallel-max-host",          ARG_UNUM, ' ', C_PARALLEL_HOST},
   {"pass",                       ARG_STRG|ARG_CLEAR, ' ', C_PASS},
   {"path-as-is",                 ARG_BOOL, ' ', C_PATH_AS_IS},
+  {"percent-encoding-as-is",     ARG_BOOL, ' ', C_PERCENT_ENCODING_AS_IS},
   {"pinnedpubkey",               ARG_STRG|ARG_TLS, ' ', C_PINNEDPUBKEY},
   {"post301",                    ARG_BOOL, ' ', C_POST301},
   {"post302",                    ARG_BOOL, ' ', C_POST302},
@@ -1994,6 +1995,9 @@ static ParameterError opt_bool(struct OperationConfig *config,
 #endif
   case C_PATH_AS_IS: /* --path-as-is */
     config->path_as_is = toggle;
+    break;
+  case C_PERCENT_ENCODING_AS_IS: /* --percent-encoding-as-is */
+    config->percent_encoding_as_is = toggle;
     break;
   case C_TFTP_NO_OPTIONS: /* --tftp-no-options */
     config->tftp_no_options = toggle;

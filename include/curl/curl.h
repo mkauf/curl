@@ -2262,6 +2262,9 @@ typedef enum {
   /* set TLS supported signature algorithms */
   CURLOPT(CURLOPT_SSL_SIGNATURE_ALGORITHMS, CURLOPTTYPE_STRINGPOINT, 328),
 
+  /* do not normalize hex digits in percent-encoding */
+  CURLOPT(CURLOPT_PERCENT_ENCODING_AS_IS, CURLOPTTYPE_LONG, 329),
+
   CURLOPT_LASTENTRY /* the last unused */
 } CURLoption;
 

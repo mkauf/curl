@@ -1530,7 +1530,9 @@ static CURLcode parseurlandfillconn(struct Curl_easy *data,
                        CURLU_NON_SUPPORT_SCHEME |
                        (data->set.disallow_username_in_url ?
                         CURLU_DISALLOW_USER : 0) |
-                       (data->set.path_as_is ? CURLU_PATH_AS_IS : 0)));
+                       (data->set.path_as_is ? CURLU_PATH_AS_IS : 0) |
+                       (data->set.pctenc_as_is ? CURLU_PERCENT_ENCODING_AS_IS
+                         : 0)));
     if(uc) {
       failf(data, "URL rejected: %s", curl_url_strerror(uc));
       result = Curl_uc_to_curlcode(uc);
@@ -1589,7 +1591,9 @@ static CURLcode parseurlandfillconn(struct Curl_easy *data,
     goto out;
   }
 
-  uc = curl_url_get(uh, CURLUPART_PATH, &data->state.up.path, CURLU_URLENCODE);
+  uc = curl_url_get(uh, CURLUPART_PATH, &data->state.up.path,
+                    CURLU_URLENCODE | (data->set.pctenc_as_is ?
+                      CURLU_PERCENT_ENCODING_AS_IS : 0));
   if(uc) {
     result = Curl_uc_to_curlcode(uc);
     goto out;
